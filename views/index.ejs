@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    body {
+      text-align: center;
+    }
+
+    #call,
+    #hang-up,
+    h1,
+    h2,
+    p {
+      font-family: "Lato", sans-serif;
+    }
+
+    h1 {
+      font-size: 4em;
+      color: #148dcd;
+    }
+
+    h2,
+    #call,
+    #hang-up {
+      font-size: 2em;
+    }
+
+    p {
+      font-size: 150px;
+      margin: 0
+    }
+
+    #conversations {
+      display: none
+    }
+
+    img {
+      width: 140px;
+      height: 140px;
+      margin-right: 15px;
+    }
+
+    label>input {
+      /* HIDE RADIO */
+      visibility: hidden;
+      /* Makes input not-clickable */
+      position: absolute;
+      /* Remove input from document flow */
+    }
+
+    label>input+img {
+      /* IMAGE STYLES */
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    label>input:checked+img {
+      /* (RADIO CHECKED) IMAGE STYLES */
+      border: 5px solid #148dcd;
+      padding: 2px
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/nexmo-stitch@2.0.0/dist/conversationClient.js"></script>
+</head>
+
+<body>
+  <section id="loading">
+    Loading...
+  </section>
+  <section id="conversations">
+    <form id="call-phone-form">
+      <h1>Call <br> Nexmo Event <br> Support</h1>
+      <% members.forEach(function(member) { %>
+        <label>
+              <input type="radio" name="callee" value="<%= member %>" id="<%= member %>" />
+
+              <img src="/assets/<%= member %>.jpeg">
+            </label>
+        <% }); %>
+
+          <br>
+
+          <input id="call" type="submit" value="Call" />
+          <button id="hang-up">Hang Up</button>
+          <h2>Text <%= phone %> to get €10 Nexmo credit</h2>
+    </form>
+
+  </section>
+
+  <script>
+    class ChatApp {
+      constructor() {
+        this.callPhoneForm = document.getElementById('call-phone-form')
+        this.hangUpButton = document.getElementById('hang-up')
+        this.setupUserEvents()
+      }
+
+      listConversations(userToken) {
+        new ConversationClient({
+            debug: false
+          })
+          .login("<%= token %>")
+          .then(app => {
+            console.log('*** Logged into app', app)
+            this.app = app
+
+            document.getElementById('conversations').style.display = "block"
+            document.getElementById('loading').style.display = "none"
+
+            app.on("member:call", (member, call) => {
+              console.log(member, call);
+              this.call = call
+            });
+          })
+          .catch(console.log)
+      }
+
+      setupUserEvents() {
+
+        this.listConversations()
+
+        this.callPhoneForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          this.app.callPhone(this.callPhoneForm.callee.value)
+        })
+
+        this.hangUpButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          this.call.hangUp()
+        })
+      }
+    }
+    new ChatApp()
+  </script>
+</body>
+
+</html>

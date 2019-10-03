@@ -1,0 +1,5 @@
+
+.env
+.nexmo-app
+private.key
+node_modules

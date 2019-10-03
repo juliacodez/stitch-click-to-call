@@ -1,0 +1,19 @@
+{
+  "name": "stitch-click-to-call",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "nexmo": "^2.3.1-beta-1",
+    "nexmo-stitch": "^2.0.0"
+  }
+}
