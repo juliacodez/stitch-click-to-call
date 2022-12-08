@@ -12,7 +12,7 @@
     "body-parser": "^1.18.3",
     "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "nexmo": "^2.3.1-beta-1",
     "nexmo-stitch": "^2.0.0"
   }
